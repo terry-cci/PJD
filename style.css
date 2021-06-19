@@ -41,6 +41,10 @@ body {
   height: 100%;
 }
 
+.slot:first-child img {
+  transform: rotate(180deg);
+}
+
 #control {
   display: flex;
   width: 80%;

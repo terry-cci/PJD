@@ -71,7 +71,7 @@ function render(result) {
       const oldImg = slot.querySelector("img");
       const newImg = slotImages[slots[player]][result[player]].cloneNode();
       if (oldImg) {
-        slot.replaceChild(newImg, oldImg);
+        oldImg.src = newImg.src;
       } else {
         slot.innerHTML = "";
         slot.appendChild(newImg);
