@@ -1,3 +1,8 @@
+const score = {
+  player: 0,
+  bot: 0,
+};
+
 const slots = {
   player: null,
   bot: null,
@@ -45,9 +50,15 @@ function judge() {
   } else if (DEFEAT_BY[slots.player] === slots.bot) {
     result.player = RESULT_ID.lose;
     result.bot = RESULT_ID.win;
-  } else {
+  } else if (slots.player === DEFEAT_BY[slots.bot]) {
     result.player = RESULT_ID.win;
     result.bot = RESULT_ID.lose;
+  }
+
+  for (const player in result) {
+    if (result[player] != undefined && result[player] != RESULT_ID.lose) {
+      score[player]++;
+    }
   }
 
   return result;
@@ -55,9 +66,22 @@ function judge() {
 
 function render(result) {
   for (const player in result) {
-    const slot = document.querySelector(`.slot#${player}`);
-    slot.innerHTML = "";
-    slot.appendChild(slotImages[slots[player]][result[player]].cloneNode());
+    if (result[player] !== undefined) {
+      const slot = document.querySelector(`.slot#${player}`);
+      const oldImg = slot.querySelector("img");
+      const newImg = slotImages[slots[player]][result[player]].cloneNode();
+      if (oldImg) {
+        slot.replaceChild(newImg, oldImg);
+      } else {
+        slot.innerHTML = "";
+        slot.appendChild(newImg);
+      }
+    }
+  }
+
+  for (const player in score) {
+    const span = document.querySelector(`#score #${player}`);
+    span.innerText = score[player];
   }
 }
 
@@ -74,3 +98,4 @@ function render(result) {
 });
 
 preload();
+render();
